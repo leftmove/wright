@@ -1,0 +1,36 @@
+[project]
+name = "platform"
+version = "0.1.0"
+description = "Platform library for Wright."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi[standard]>=0.116.1",
+    "lxml>=6.0.1",
+]
+
+[tool.uv]
+cache-keys = [{file = "pyproject.toml"}, {file = "bindings/Cargo.toml"}, {file = "**/*.rs"}]
+
+[tool.uv.sources]
+extensions = { path = "bindings" }
+
+[build-system]
+requires = ["maturin>=1.4,<2"]
+build-backend = "maturin"
+
+[tool.maturin]
+manifest-path = "bindings/Cargo.toml"
+features = ["pyo3/extension-module", "pyo3/abi3-py310"]
+
+[tool.pyrefly]
+project-includes = ["**/*"]
+project-excludes = ["**/__pycache__", "**/*venv/**/*", "**/*.pyc"]
+venvPath = "."
+venv = ".venv"
+site-package-path = [".venv/lib/python3.10/site-packages"]
+
+[dependency-groups]
+dev = [
+    "maturin>=1.4,<2",
+]

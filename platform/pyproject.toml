@@ -10,17 +10,17 @@ dependencies = [
 ]
 
 [tool.uv]
-cache-keys = [{file = "pyproject.toml"}, {file = "bindings/Cargo.toml"}, {file = "**/*.rs"}]
+cache-keys = [{file = "pyproject.toml"}, {file = "../engine/bindings/Cargo.toml"}, {file = "**/*.rs"}]
 
 [tool.uv.sources]
-extensions = { path = "bindings" }
+bindings = { path = "../engine/bindings" }
 
 [build-system]
 requires = ["maturin>=1.4,<2"]
 build-backend = "maturin"
 
 [tool.maturin]
-manifest-path = "bindings/Cargo.toml"
+manifest-path = "../engine/bindings/Cargo.toml"
 features = ["pyo3/extension-module", "pyo3/abi3-py310"]
 
 [tool.pyrefly]

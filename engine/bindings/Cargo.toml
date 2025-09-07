@@ -1,17 +1,20 @@
 [package]
-name = "wright-extensions"
+name = "wright-bindings"
 version = "0.1.0"
 edition = "2024"
 
 [lib]
-name = "extensions"
-crate-type = ["cdylib"]
+name = "bindings"
+crate-type = ["cdylib", "rlib"]
 
 [dependencies]
 pyo3 = { version = "0.25.1", features = ["extension-module", "abi3-py310"] }
 
+maud = "0.27.0"
 typst = "0.13.1"
 typst-svg = "0.13.1"
+typst-kit = { version = "0.13", features = ["embed-fonts"] }
+typst-as-lib = "0.14.4"
 comemo = "0.4"
 
 zune-inflate = { version = "0.2", default-features = false, features = [
@@ -23,8 +26,11 @@ ureq = "2.9"
 
 time = "0.3"
 ttf-parser = "0.25"
-typst-kit = { version = "0.13", features = ["embed-fonts"] }
-typst-as-lib = "0.14.4"
+typst-library = "0.13.1"
+pyo3-stub-gen = "0.13.1"
+
+[patch.crates-io]
+typst-svg = { path = "./patches/typst-svg-0.13.1" }
 
 [package.metadata.maturin]
-name = "extensions"
+name = "bindings"

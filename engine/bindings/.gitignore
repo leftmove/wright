@@ -1,7 +1,9 @@
-target/
 .DS_Store
+.vscode/
+
 .cargo/
+target/
 .venv/
 
-**/*.pyi
+
 **/*.so

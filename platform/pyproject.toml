@@ -5,6 +5,7 @@ description = "Platform library for Wright."
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
+    "bindings",
     "fastapi[standard]>=0.116.1",
     "lxml>=6.0.1",
 ]

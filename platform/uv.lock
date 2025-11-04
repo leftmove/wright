@@ -26,11 +26,6 @@ wheels = [
 ]
 
 [[package]]
-name = "bindings"
-version = "0.1.0"
-source = { virtual = "../engine/bindings" }
-
-[[package]]
 name = "certifi"
 version = "2025.8.3"
 source = { registry = "https://pypi.org/simple" }
@@ -460,7 +455,6 @@ name = "platform"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
-    { name = "bindings" },
     { name = "fastapi", extra = ["standard"] },
     { name = "lxml" },
 ]
@@ -472,7 +466,6 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "bindings", virtual = "../engine/bindings" },
     { name = "fastapi", extras = ["standard"], specifier = ">=0.116.1" },
     { name = "lxml", specifier = ">=6.0.1" },
 ]

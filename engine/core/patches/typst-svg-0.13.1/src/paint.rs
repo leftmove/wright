@@ -42,11 +42,13 @@ impl SVGRenderer {
             Paint::Solid(color) => self.xml.write_attribute("fill", &color.encode()),
             Paint::Gradient(gradient) => {
                 let id = self.push_gradient(gradient, size, ts);
-                self.xml.write_attribute_fmt("fill", format_args!("url(#{id})"));
+                self.xml
+                    .write_attribute_fmt("fill", format_args!("url(#{id})"));
             }
             Paint::Tiling(tiling) => {
                 let id = self.push_tiling(tiling, size, ts);
-                self.xml.write_attribute_fmt("fill", format_args!("url(#{id})"));
+                self.xml
+                    .write_attribute_fmt("fill", format_args!("url(#{id})"));
             }
         }
         match fill_rule {
@@ -62,12 +64,7 @@ impl SVGRenderer {
     /// inserted gradient. If the transform of the gradient is the identify
     /// matrix, the returned ID will be the ID of the "source" gradient,
     /// this is a file size optimization.
-    pub(super) fn push_gradient(
-        &mut self,
-        gradient: &Gradient,
-        size: Size,
-        ts: Transform,
-    ) -> Id {
+    pub(super) fn push_gradient(&mut self, gradient: &Gradient, size: Size, ts: Transform) -> Id {
         let gradient_id = self
             .gradients
             .insert_with(hash128(&(gradient, size.aspect_ratio())), || {
@@ -86,12 +83,7 @@ impl SVGRenderer {
             })
     }
 
-    pub(super) fn push_tiling(
-        &mut self,
-        tiling: &Tiling,
-        size: Size,
-        ts: Transform,
-    ) -> Id {
+    pub(super) fn push_tiling(&mut self, tiling: &Tiling, size: Size, ts: Transform) -> Id {
         let tiling_size = tiling.size() + tiling.spacing();
         // Unfortunately due to a limitation of `xmlwriter`, we need to
         // render the frame twice: once to allocate all of the resources
@@ -103,14 +95,15 @@ impl SVGRenderer {
         );
 
         let tiling_id = self.tilings.insert_with(hash128(tiling), || tiling.clone());
-        self.tiling_refs.insert_with(hash128(&(tiling_id, ts)), || TilingRef {
-            id: tiling_id,
-            transform: ts,
-            ratio: Axes::new(
-                Ratio::new(tiling_size.x.to_pt() / size.x.to_pt()),
-                Ratio::new(tiling_size.y.to_pt() / size.y.to_pt()),
-            ),
-        })
+        self.tiling_refs
+            .insert_with(hash128(&(tiling_id, ts)), || TilingRef {
+                id: tiling_id,
+                transform: ts,
+                ratio: Axes::new(
+                    Ratio::new(tiling_size.x.to_pt() / size.x.to_pt()),
+                    Ratio::new(tiling_size.y.to_pt() / size.y.to_pt()),
+                ),
+            })
     }
 
     /// Write the raw gradients (without transform) to the SVG file.
@@ -136,9 +129,7 @@ impl SVGRenderer {
                     let (x1, y1, x2, y2) = match angle.quadrant() {
                         Quadrant::First => (0.0, 0.0, cos * length, sin * length),
                         Quadrant::Second => (1.0, 0.0, cos * length + 1.0, sin * length),
-                        Quadrant::Third => {
-                            (1.0, 1.0, cos * length + 1.0, sin * length + 1.0)
-                        }
+                        Quadrant::Third => (1.0, 1.0, cos * length + 1.0, sin * length + 1.0),
                         Quadrant::Fourth => (0.0, 1.0, cos * length, sin * length + 1.0),
                     };
 
@@ -171,10 +162,9 @@ impl SVGRenderer {
                     self.xml.write_attribute("y", "-0.5");
 
                     // The rotation angle, negated to match rotation in PNG.
-                    let angle: f32 =
-                        -(Gradient::correct_aspect_ratio(conic.angle, *ratio).to_rad()
-                            as f32)
-                            .rem_euclid(TAU);
+                    let angle: f32 = -(Gradient::correct_aspect_ratio(conic.angle, *ratio).to_rad()
+                        as f32)
+                        .rem_euclid(TAU);
                     let center: (f32, f32) =
                         (conic.center.x.get() as f32, conic.center.y.get() as f32);
 
@@ -186,10 +176,7 @@ impl SVGRenderer {
 
                         // Create the path for the segment.
                         let mut builder = SvgPathBuilder::default();
-                        builder.move_to(
-                            correct_tiling_pos(center.0),
-                            correct_tiling_pos(center.1),
-                        );
+                        builder.move_to(correct_tiling_pos(center.0), correct_tiling_pos(center.1));
                         builder.line_to(
                             correct_tiling_pos(-2.0 * (theta1 + angle).cos() + center.0),
                             correct_tiling_pos(2.0 * (theta1 + angle).sin() + center.1),
@@ -200,12 +187,8 @@ impl SVGRenderer {
                             0,
                             1,
                             (
-                                correct_tiling_pos(
-                                    -2.0 * (theta2 + angle).cos() + center.0,
-                                ),
-                                correct_tiling_pos(
-                                    2.0 * (theta2 + angle).sin() + center.1,
-                                ),
+                                correct_tiling_pos(-2.0 * (theta2 + angle).cos() + center.0),
+                                correct_tiling_pos(2.0 * (theta2 + angle).sin() + center.1),
                             ),
                         );
                         builder.close();
@@ -216,10 +199,8 @@ impl SVGRenderer {
                             center: conic.center,
                             t0: Angle::rad((theta1 + angle) as f64),
                             t1: Angle::rad((theta2 + angle) as f64),
-                            c0: gradient
-                                .sample(RatioOrAngle::Ratio(Ratio::new(t1 as f64))),
-                            c1: gradient
-                                .sample(RatioOrAngle::Ratio(Ratio::new(t2 as f64))),
+                            c0: gradient.sample(RatioOrAngle::Ratio(Ratio::new(t1 as f64))),
+                            c1: gradient.sample(RatioOrAngle::Ratio(Ratio::new(t2 as f64))),
                         };
                         let id = self
                             .conic_subgradients
@@ -228,7 +209,8 @@ impl SVGRenderer {
                         // Add the path to the pattern.
                         self.xml.start_element("path");
                         self.xml.write_attribute("d", &builder.0);
-                        self.xml.write_attribute_fmt("fill", format_args!("url(#{id})"));
+                        self.xml
+                            .write_attribute_fmt("fill", format_args!("url(#{id})"));
                         self.xml
                             .write_attribute_fmt("stroke", format_args!("url(#{id})"));
                         self.xml.write_attribute("stroke-width", "0");
@@ -301,7 +283,8 @@ impl SVGRenderer {
 
             self.xml.start_element("linearGradient");
             self.xml.write_attribute("id", &id);
-            self.xml.write_attribute("gradientUnits", "objectBoundingBox");
+            self.xml
+                .write_attribute("gradientUnits", "objectBoundingBox");
             self.xml.write_attribute("x1", &x1);
             self.xml.write_attribute("y1", &y1);
             self.xml.write_attribute("x2", &x2);
@@ -309,12 +292,14 @@ impl SVGRenderer {
 
             self.xml.start_element("stop");
             self.xml.write_attribute("offset", "0%");
-            self.xml.write_attribute("stop-color", &gradient.c0.to_hex());
+            self.xml
+                .write_attribute("stop-color", &gradient.c0.to_hex());
             self.xml.end_element();
 
             self.xml.start_element("stop");
             self.xml.write_attribute("offset", "100%");
-            self.xml.write_attribute("stop-color", &gradient.c1.to_hex());
+            self.xml
+                .write_attribute("stop-color", &gradient.c1.to_hex());
             self.xml.end_element();
 
             self.xml.end_element();
@@ -333,24 +318,18 @@ impl SVGRenderer {
             match gradient_ref.kind {
                 GradientKind::Linear => {
                     self.xml.start_element("linearGradient");
-                    self.xml.write_attribute(
-                        "gradientTransform",
-                        &SvgMatrix(gradient_ref.transform),
-                    );
+                    self.xml
+                        .write_attribute("gradientTransform", &SvgMatrix(gradient_ref.transform));
                 }
                 GradientKind::Radial => {
                     self.xml.start_element("radialGradient");
-                    self.xml.write_attribute(
-                        "gradientTransform",
-                        &SvgMatrix(gradient_ref.transform),
-                    );
+                    self.xml
+                        .write_attribute("gradientTransform", &SvgMatrix(gradient_ref.transform));
                 }
                 GradientKind::Conic => {
                     self.xml.start_element("pattern");
-                    self.xml.write_attribute(
-                        "patternTransform",
-                        &SvgMatrix(gradient_ref.transform),
-                    );
+                    self.xml
+                        .write_attribute("patternTransform", &SvgMatrix(gradient_ref.transform));
                 }
             }
 
@@ -378,8 +357,11 @@ impl SVGRenderer {
         self.xml.start_element("defs");
         self.xml.write_attribute("id", "tilings");
 
-        for (id, tiling) in
-            self.tilings.iter().map(|(i, p)| (i, p.clone())).collect::<Vec<_>>()
+        for (id, tiling) in self
+            .tilings
+            .iter()
+            .map(|(i, p)| (i, p.clone()))
+            .collect::<Vec<_>>()
         {
             let size = tiling.size() + tiling.spacing();
             self.xml.start_element("pattern");
@@ -506,10 +488,9 @@ pub trait ColorEncode {
 impl ColorEncode for Color {
     fn encode(&self) -> EcoString {
         match *self {
-            c @ Color::Rgb(_)
-            | c @ Color::Luma(_)
-            | c @ Color::Cmyk(_)
-            | c @ Color::Hsv(_) => c.to_hex(),
+            c @ Color::Rgb(_) | c @ Color::Luma(_) | c @ Color::Cmyk(_) | c @ Color::Hsv(_) => {
+                c.to_hex()
+            }
             Color::LinearRgb(rgb) => {
                 if rgb.alpha != 1.0 {
                     eco_format!(

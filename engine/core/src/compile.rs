@@ -9,6 +9,7 @@ use typst::syntax::{FileId, Source};
 use typst::text::{Font, FontBook};
 use typst::utils::LazyHash;
 use typst::Library;
+use typst_library::Feature;
 use typst_kit::fonts::{FontSearcher, FontSlot};
 
 pub struct TypstWrapperWorld {
@@ -28,8 +29,11 @@ impl TypstWrapperWorld {
         let root = PathBuf::from(root);
         let fonts = FontSearcher::new().include_system_fonts(true).search();
 
+        let features = vec![Feature::Html].into_iter().collect();
+        let library = Library::builder().with_features(features).build();
+
         Self {
-            library: LazyHash::new(Library::default()),
+            library: LazyHash::new(library),
             book: LazyHash::new(fonts.book),
             root,
             fonts: fonts.fonts,
@@ -41,6 +45,10 @@ impl TypstWrapperWorld {
             http: ureq::Agent::new(),
             files: Arc::new(Mutex::new(HashMap::new())),
         }
+    }
+
+    pub fn main_source(&self) -> &Source {
+        &self.source
     }
 }
 

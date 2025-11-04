@@ -9,28 +9,15 @@ crate-type = ["cdylib", "rlib"]
 
 [dependencies]
 pyo3 = { version = "0.25.1", features = ["extension-module", "abi3-py310"] }
-
-maud = "0.27.0"
-typst = "0.13.1"
-typst-svg = "0.13.1"
-typst-kit = { version = "0.13", features = ["embed-fonts"] }
-typst-as-lib = "0.14.4"
-comemo = "0.4"
-
-zune-inflate = { version = "0.2", default-features = false, features = [
-  "gzip",
-  "std",
-] }
-tar = "0.4"
-ureq = "2.9"
-
-time = "0.3"
-ttf-parser = "0.25"
-typst-library = "0.13.1"
 pyo3-stub-gen = "0.13.1"
 
+wright_core = { path = "../core", package = "wright-core" }
+typst = "0.13.1"
+typst-svg = "0.13.1"
+typst-library = "0.13.1"
+
 [patch.crates-io]
-typst-svg = { path = "./patches/typst-svg-0.13.1" }
+typst-svg = { path = "../core/patches/typst-svg-0.13.1" }
 
 [package.metadata.maturin]
 name = "bindings"

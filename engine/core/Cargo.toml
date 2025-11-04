@@ -1,0 +1,29 @@
+[package]
+name = "wright-core"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+
+maud = "0.27.0"
+typst = "0.13.1"
+typst-svg = "0.13.1"
+typst-html = "0.13.1"
+typst-kit = { version = "0.13", features = ["embed-fonts"] }
+typst-as-lib = "0.14.4"
+comemo = "0.4"
+
+zune-inflate = { version = "0.2", default-features = false, features = [
+  "gzip",
+  "std",
+] }
+tar = "0.4"
+ureq = "2.9"
+
+time = "0.3"
+ttf-parser = "0.25"
+typst-library = "0.13.1"
+typst-syntax = "0.13.1"
+
+[patch.crates-io]
+typst-svg = { path = "./patches/typst-svg-0.13.1" }

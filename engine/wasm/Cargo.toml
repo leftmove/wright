@@ -12,6 +12,14 @@ default = ["console_error_panic_hook"]
 
 [dependencies]
 wasm-bindgen = "0.2.84"
+typst = "0.13.1"
+typst-svg = "0.13.1"
+typst-library = "0.13.1"
+typst-kit = { version = "0.13", features = ["embed-fonts"] }
+typst-assets = "0.13.1"
+serde = { version = "1", features = ["derive"] }
+serde-wasm-bindgen = "0.6"
+time = "0.3"
 
 # The `console_error_panic_hook` crate provides better debugging of panics by
 # logging them with `console.error`. This is great for development, but requires
@@ -25,3 +33,6 @@ wasm-bindgen-test = "0.3.34"
 [profile.release]
 # Tell `rustc` to optimize for small code size.
 opt-level = "s"
+
+[patch.crates-io]
+typst-svg = { path = "../core/patches/typst-svg-0.13.1" }

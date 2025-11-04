@@ -1,0 +1,7 @@
+[project]
+name = "bindings"
+version = "0.1.0"
+description = "Bindings for the Wright."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = []

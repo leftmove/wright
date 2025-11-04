@@ -43,7 +43,7 @@ The action potential will fire when the spot of light is shown in that particula
 
 - Sensory surface can be other things as well, for a neuron that represents pain when someone pinches your arm, one can draw its receptive field on the surface of the skin, showing what kind of input it gets from pain receptors in the skin.
 
-#figure(image("Media//Receptive Field.png", width: 50%), caption: "Receptive field of a simple cell in the visual cortex.")
+/* #figure(image("Media//Receptive Field.png", width: 50%), caption: "Receptive field of a simple cell in the visual cortex.") */
 
 
 *Tuning Curve*: A graph of the firing rate of a neuron as a function of some stimulus parameter.
@@ -54,12 +54,12 @@ The action potential will fire when the spot of light is shown in that particula
 
 - Hubel and Wiesel found that simple cells in the visual cortex are tuned to orientation.
 
-#figure(image("Media//Neuron Stimulus and Response.png", width: 50%), caption: "Neuron's response to different orientations of a line.")
+/* #figure(image("Media//Neuron Stimulus and Response.png", width: 50%), caption: "Neuron's response to different orientations of a line.") */
 
 - Their experiments showed that the neuron is tuned to a particular orientation, and will only fire when a line of that orientation is shown.
 - Some neurons in the visual cortex are tuned to the direction in which an image *moves through their receptive field*.
 
-#figure(image("Media//Tuning Curve.png", width: 50%), caption: "Tuning curve of a neuron that is tuned to orientation.")
+/* #figure(image("Media//Tuning Curve.png", width: 50%), caption: "Tuning curve of a neuron that is tuned to orientation.") */
 
 - This neuron represents the orientation of a line shown to its receptive field: the neuron is tuned to orientation.
 
@@ -73,14 +73,14 @@ When a neurosurgeon stimulated different parts of the brain, depending on where 
 
 - There are reliable patterns in the brain that show that different parts of the brain do different things. You can even make a map to show this.
 
-#figure(image("Media//Brain Map.png", width: 50%), caption: "Map of the brain showing different functions.")
+/* #figure(image("Media//Brain Map.png", width: 50%), caption: "Map of the brain showing different functions.") */
 
 - Cognitive neuroscientists routinely mention specific parts of the brain to refer to specific functions.
 - Localization of function is across the brain, but it also exists even within specific brain regions.
 - In the visual cortex, neurons will be close together. This is because within a brain region, neurons with receptive fields that are close together in the sensory surface, will be close together in the brain.
 - Neurons are grouped by location of their receptive field on their retina.
 
-#figure(image("Media//Localization Map.png", width: 50%), caption: "Map of the brain showing localization of function.")
+/* #figure(image("Media//Localization Map.png", width: 50%), caption: "Map of the brain showing localization of function.") */
 
 - Within a brain region, neurons with receptive that are close together, are typically anatomically close together in the brain.
 - This leads to an orderly arrangement of the sensory surface (e.g. of the retina, of the skin, etc.) across the cortex, called *topographic organization*.

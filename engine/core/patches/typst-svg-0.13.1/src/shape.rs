@@ -39,12 +39,7 @@ impl SVGRenderer {
     }
 
     /// Calculate the transform of the shape's fill or stroke.
-    fn shape_paint_transform(
-        &self,
-        state: State,
-        paint: &Paint,
-        shape: &Shape,
-    ) -> Transform {
+    fn shape_paint_transform(&self, state: State, paint: &Paint, shape: &Shape) -> Transform {
         let mut shape_size = shape.geometry.bbox_size();
         // Edge cases for strokes.
         if shape_size.x.to_pt() == 0.0 {
@@ -110,15 +105,18 @@ impl SVGRenderer {
             Paint::Solid(color) => self.xml.write_attribute("stroke", &color.encode()),
             Paint::Gradient(gradient) => {
                 let id = self.push_gradient(gradient, size, fill_transform);
-                self.xml.write_attribute_fmt("stroke", format_args!("url(#{id})"));
+                self.xml
+                    .write_attribute_fmt("stroke", format_args!("url(#{id})"));
             }
             Paint::Tiling(tiling) => {
                 let id = self.push_tiling(tiling, size, fill_transform);
-                self.xml.write_attribute_fmt("stroke", format_args!("url(#{id})"));
+                self.xml
+                    .write_attribute_fmt("stroke", format_args!("url(#{id})"));
             }
         }
 
-        self.xml.write_attribute("stroke-width", &stroke.thickness.to_pt());
+        self.xml
+            .write_attribute("stroke-width", &stroke.thickness.to_pt());
         self.xml.write_attribute(
             "stroke-linecap",
             match stroke.cap {
@@ -138,7 +136,8 @@ impl SVGRenderer {
         self.xml
             .write_attribute("stroke-miterlimit", &stroke.miter_limit.get());
         if let Some(dash) = &stroke.dash {
-            self.xml.write_attribute("stroke-dashoffset", &dash.phase.to_pt());
+            self.xml
+                .write_attribute("stroke-dashoffset", &dash.phase.to_pt());
             self.xml.write_attribute(
                 "stroke-dasharray",
                 &dash

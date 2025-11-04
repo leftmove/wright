@@ -3,9 +3,7 @@ use ecow::{eco_format, EcoString};
 use image::{codecs::png::PngEncoder, ImageEncoder};
 use typst_library::foundations::Smart;
 use typst_library::layout::{Abs, Axes};
-use typst_library::visualize::{
-    ExchangeFormat, Image, ImageKind, ImageScaling, RasterFormat,
-};
+use typst_library::visualize::{ExchangeFormat, Image, ImageKind, ImageScaling, RasterFormat};
 
 use crate::SVGRenderer;
 
@@ -18,18 +16,24 @@ impl SVGRenderer {
         self.xml.write_attribute("width", &size.x.to_pt());
         self.xml.write_attribute("height", &size.y.to_pt());
         self.xml.write_attribute("preserveAspectRatio", "none");
-        match image.scaling() {
-            Smart::Auto => {}
-            Smart::Custom(ImageScaling::Smooth) => {
-                // This is still experimental and not implemented in all major browsers.
-                // https://developer.mozilla.org/en-US/docs/Web/CSS/image-rendering#browser_compatibility
-                self.xml.write_attribute("style", "image-rendering: smooth")
-            }
-            Smart::Custom(ImageScaling::Pixelated) => {
-                self.xml.write_attribute("style", "image-rendering: pixelated")
-            }
+        if let Some(value) = convert_image_scaling(image.scaling()) {
+            self.xml
+                .write_attribute("style", &format_args!("image-rendering: {value}"))
         }
         self.xml.end_element();
+    }
+}
+
+/// Converts an image scaling to a CSS `image-rendering` propery value.
+pub fn convert_image_scaling(scaling: Smart<ImageScaling>) -> Option<&'static str> {
+    match scaling {
+        Smart::Auto => None,
+        Smart::Custom(ImageScaling::Smooth) => {
+            // This is still experimental and not implemented in all major browsers.
+            // https://developer.mozilla.org/en-US/docs/Web/CSS/image-rendering#browser_compatibility
+            Some("smooth")
+        }
+        Smart::Custom(ImageScaling::Pixelated) => Some("pixelated"),
     }
 }
 
@@ -66,3 +70,5 @@ pub fn convert_image_to_base64_url(image: &Image) -> EcoString {
     url.push_str(&data);
     url
 }
+
+// PDF rasterization is intentionally omitted in this build.

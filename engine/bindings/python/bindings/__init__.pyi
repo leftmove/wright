@@ -1,9 +1,7 @@
 
 
 def compile_svg(document: str) -> list[str]: ...
-def compile_html(document: str) -> str: ...
 
 __all__ = [
     "compile_svg",
-    "compile_html",
 ]

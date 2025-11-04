@@ -5,13 +5,18 @@ description = "Platform library for Wright."
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
-    "bindings",
     "fastapi[standard]>=0.116.1",
     "lxml>=6.0.1",
 ]
 
 [tool.uv]
-cache-keys = [{file = "pyproject.toml"}, {file = "../engine/bindings/Cargo.toml"}, {file = "**/*.rs"}]
+cache-keys = [
+    {file = "pyproject.toml"},
+    {file = "../engine/bindings/Cargo.toml"},
+    {file = "**/*.rs"},
+    {file = "../engine/bindings/src/**/*.rs"},
+    {file = "../engine/bindings/patches/**/*.rs"},
+]
 
 [tool.uv.sources]
 bindings = { path = "../engine/bindings" }

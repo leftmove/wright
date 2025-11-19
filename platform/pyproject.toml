@@ -13,9 +13,9 @@ dependencies = [
 cache-keys = [
     {file = "pyproject.toml"},
     {file = "../engine/bindings/Cargo.toml"},
-    {file = "**/*.rs"},
-    {file = "../engine/bindings/src/**/*.rs"},
-    {file = "../engine/bindings/patches/**/*.rs"},
+    {file = "../engine/bindings/**/*.rs"},
+    {file = "../engine/core/Cargo.toml"},
+    {file = "../engine/core/**/*.rs"},
 ]
 
 [tool.uv.sources]

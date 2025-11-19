@@ -1,3 +1,9 @@
 {
-  "cSpell.words": ["pyfunction", "pymodule", "svgs", "typst"]
+  "cSpell.words": ["prosemirror", "pyfunction", "pymodule", "svgs", "typst"],
+  "tailwindCSS.experimental.classRegex": [
+    "class:\\s*?[\"'`]([^\"'`]*).*?,",
+    "cva\\(([^)(]*(?:\\([^)(]*(?:\\([^)(]*(?:\\([^)(]*\\)[^)(]*)*\\)[^)(]*)*\\)[^)(]*)*)\\)",
+    "'([^']*)'"
+  ],
+  "tailwindCSS.classFunctions": ["cva", "cx"]
 }

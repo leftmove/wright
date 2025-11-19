@@ -27,3 +27,4 @@ typst-syntax = "0.13.1"
 
 [patch.crates-io]
 typst-svg = { path = "./patches/typst-svg-0.13.1" }
+typst-html = { path = "./patches/typst-html-0.13.1" }

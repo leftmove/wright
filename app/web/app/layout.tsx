@@ -56,7 +56,8 @@ export default function RootLayout({
           <ConvexClient>
             <Themes>
               {children}
-              <Redirect />
+              {/* Uncomment this when in production */}
+              {/* <Redirect /> */}
             </Themes>
           </ConvexClient>
         </ConvexServer>

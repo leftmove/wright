@@ -1,12 +1,12 @@
 {
-  "name": "wright",
+  "name": "wright-mono",
   "module": "index.ts",
   "type": "module",
   "private": true,
   "workspaces": [
     "web",
-    "lib",
-    "native"
+    "native",
+    "editor"
   ],
   "devDependencies": {
     "@types/bun": "latest"
